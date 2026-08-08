@@ -6,10 +6,18 @@ export default function Home() {
   const [message, setMessage] = useState("Loading...");
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/message")
-      .then((res) => res.json())
-      .then((data) => setMessage(data.message))
-      .catch(() => setMessage("Connection failed"));
+    async function fetchData() {
+      try {
+        const res = await fetch("http://localhost:5000/api/message");
+        const data = await res.json();
+        setMessage(data.message);
+      } catch (error) {
+        console.error(error);
+        setMessage("Connection failed");
+      }
+    }
+
+    fetchData();
   }, []);
 
   return (
